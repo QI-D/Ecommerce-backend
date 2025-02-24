@@ -5,6 +5,7 @@ import com.qid.ecommerce.dto.Response;
 import com.qid.ecommerce.entity.Address;
 import com.qid.ecommerce.entity.User;
 import com.qid.ecommerce.repository.AddressRepo;
+import com.qid.ecommerce.repository.UserRepo;
 import com.qid.ecommerce.service.interf.AddressService;
 import com.qid.ecommerce.service.interf.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ public class AddressServiceImpl implements AddressService {
 
     private final AddressRepo addressRepo;
     private final UserService userService;
+    private final UserRepo userRepo;
 
     @Override
     public Response saveAndUpdateAddress(AddressDto addressDto) {
@@ -34,6 +36,9 @@ public class AddressServiceImpl implements AddressService {
         if (addressDto.getCountry() != null) address.setCountry(addressDto.getCountry());
 
         addressRepo.save(address);
+
+        user.setAddress(address);
+        userRepo.save(user);
 
         String message = (user.getAddress() == null) ? "Address successfully created" : "Address successfully updated";
 
